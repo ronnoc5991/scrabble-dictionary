@@ -3,8 +3,19 @@ import TrieNode from "./TrieNode";
 export default class Trie {
   private root: TrieNode;
 
-  constructor() {
+  constructor(pathToWordList: string) {
     this.root = new TrieNode();
+    this.loadWordList(pathToWordList);
+  }
+
+  private loadWordList(pathToWordList: string) {
+    const lineReader = require("readline").createInterface({
+      input: require("fs").createReadStream(pathToWordList),
+    });
+
+    lineReader.on("line", (line: string) => {
+      this.insert(line.toLowerCase());
+    });
   }
 
   public insert(word: string): void {
